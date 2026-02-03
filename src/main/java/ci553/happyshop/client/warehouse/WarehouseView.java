@@ -63,12 +63,13 @@ import javafx.scene.input.MouseEvent;
  */
 
 public class WarehouseView  {
+    private static Stage viewWindow;
+
     private final int WIDTH = UIStyle.warehouseWinWidth;
     private final int HEIGHT = UIStyle.warehouseWinHeight;
     private final int COLUMN_WIDTH = WIDTH / 2 - 10;
 
     public WarehouseController controller;
-    private Stage viewWindow;
     /** A reference to the main window that is used to get its bounds (position and size).
      * This allows us to position other windows (like the History window or alert) relative to the Warehouse window.
      * It helps in keeping the UI layout consistent by placing new windows near the Warehouse window.
@@ -131,6 +132,14 @@ public class WarehouseView  {
     // URI of the image selected by the user for a new product. This value is retrieved from the image chooser.
 
     public void start(Stage window) {
+
+        if (viewWindow != null && viewWindow.isShowing()) {
+            viewWindow.toFront();
+            viewWindow.requestFocus();
+            window.close();
+            return;
+        }
+
         VBox vbSearchPage = createSearchPage();
         VBox vbProductFormPage = createProductFormPage();
 
@@ -153,6 +162,8 @@ public class WarehouseView  {
         // dynamically position itself based on its size, and any already displayed windows.
         window.show();
         viewWindow = window; // Sets the global viewWindow reference to this window for future reference and management.
+
+        window.setOnHidden(e -> viewWindow = null);
     }
 
     private VBox createSearchPage() {
