@@ -24,6 +24,8 @@ import java.io.IOException;
  */
 
 public class PickerView  {
+    private static Stage viewWindow;
+
     public PickerController pickerController;
 
     private final int WIDTH = UIStyle.pickerWinWidth;
@@ -43,6 +45,13 @@ public class PickerView  {
        // Reminds the picker not to close the window if the order hasn't been collected by the customer.
 
     public void start(Stage window) {
+        if (viewWindow != null && viewWindow.isShowing()) {
+            viewWindow.toFront();
+            viewWindow.requestFocus();
+            window.close();
+            return;
+        }
+
         vbOrderMapRoot = createOrderMapRoot();
         vbOrderDetailRoot = createOrderDetailRoot();
         scene = new Scene(vbOrderMapRoot, WIDTH, HEIGHT);
@@ -50,6 +59,10 @@ public class PickerView  {
         window.setTitle("🛒 HappyShop Order Picker");
         WinPosManager.registerWindow(window,WIDTH,HEIGHT); //calculate position x and y for this window
         window.show();
+
+        viewWindow = window;
+        window.setOnHidden(e -> viewWindow = null);
+
 
         // Set the window close request to prevent closing if the order is not collected
         window.setOnCloseRequest(event -> {
@@ -121,6 +134,11 @@ public class PickerView  {
     }
 
     void update(String strOrderMap, String strOrderDetail) {
+        if (laDetailRootTitle == null) {
+            return;
+        }
+
+
         taOrderMap.setText(strOrderMap);
         taOrderDetail.setText(strOrderDetail);
         laDetailRootTitle.setText("Progressing Order Details");
