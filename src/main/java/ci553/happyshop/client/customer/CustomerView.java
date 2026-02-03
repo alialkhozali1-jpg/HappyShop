@@ -48,9 +48,17 @@ public class CustomerView  {
 
     // Holds a reference to this CustomerView window for future access and management
     // (e.g., positioning the removeProductNotifier when needed).
-    private Stage viewWindow;
+    private static Stage viewWindow;
 
     public void start(Stage window) {
+
+        if (viewWindow != null && viewWindow.isShowing()) {
+            viewWindow.toFront();
+            viewWindow.requestFocus();
+            window.close();
+            return;
+        }
+
         VBox vbSearchPage = createSearchPage();
         vbTrolleyPage = CreateTrolleyPage();
         vbReceiptPage = createReceiptPage();
@@ -72,7 +80,10 @@ public class CustomerView  {
         window.setTitle("🛒 HappyShop Customer Client");
         WinPosManager.registerWindow(window,WIDTH,HEIGHT); //calculate position x and y for this window
         window.show();
-        viewWindow=window;// Sets viewWindow to this window for future reference and management.
+        viewWindow = window;
+
+        window.setOnHidden(e -> viewWindow = null);
+
     }
 
     private VBox createSearchPage() {
