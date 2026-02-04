@@ -11,12 +11,16 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+
 
 /**
  * The CustomerView is separated into two sections by a line :
@@ -108,9 +112,14 @@ public class CustomerView  {
         Button btnSearch = new Button("Search");
         btnSearch.setStyle(UIStyle.buttonStyle);
         btnSearch.setOnAction(this::buttonClicked);
+        applyButtonEffects(btnSearch);
+
         Button btnAddToTrolley = new Button("Add to Trolley");
         btnAddToTrolley.setStyle(UIStyle.buttonStyle);
+
+        applyButtonEffects(btnAddToTrolley);
         btnAddToTrolley.setOnAction(this::buttonClicked);
+
         HBox hbBtns = new HBox(10, laPlaceHolder,btnSearch, btnAddToTrolley);
 
         ivProduct = new ImageView("imageHolder.jpg");
@@ -143,12 +152,16 @@ public class CustomerView  {
         taTrolley.setPrefSize(WIDTH/2, HEIGHT-50);
 
         Button btnCancel = new Button("Cancel");
-        btnCancel.setOnAction(this::buttonClicked);
+
         btnCancel.setStyle(UIStyle.buttonStyle);
+        btnCancel.setOnAction(this::buttonClicked);
+        applyButtonEffects(btnCancel);
 
         Button btnCheckout = new Button("Check Out");
-        btnCheckout.setOnAction(this::buttonClicked);
+
         btnCheckout.setStyle(UIStyle.buttonStyle);
+        btnCheckout.setOnAction(this::buttonClicked);
+        applyButtonEffects(btnCheckout);
 
         HBox hbBtns = new HBox(10, btnCancel,btnCheckout);
         hbBtns.setStyle("-fx-padding: 15px;");
@@ -171,8 +184,8 @@ public class CustomerView  {
 
         Button btnCloseReceipt = new Button("OK & Close"); //btn for closing receipt and showing trolley page
         btnCloseReceipt.setStyle(UIStyle.buttonStyle);
-
         btnCloseReceipt.setOnAction(this::buttonClicked);
+        applyButtonEffects(btnCloseReceipt);
 
         vbReceiptPage = new VBox(15, laPageTitle, taReceipt, btnCloseReceipt);
         vbReceiptPage.setPrefWidth(COLUMN_WIDTH);
@@ -226,4 +239,31 @@ public class CustomerView  {
         return new WindowBounds(viewWindow.getX(), viewWindow.getY(),
                   viewWindow.getWidth(), viewWindow.getHeight());
     }
+
+    private void applyButtonEffects(Button b) {
+        DropShadow shadow = new DropShadow();
+        shadow.setRadius(10);
+        shadow.setOffsetY(2);
+        shadow.setColor(Color.rgb(0, 0, 0, 0.25));
+
+        b.setOnMouseEntered(e -> {
+            b.setEffect(shadow);
+            b.setStyle(b.getStyle() + "; -fx-cursor: hand;");
+        });
+
+        b.setOnMouseExited(e -> {
+            b.setEffect(null);
+        });
+
+        b.setOnMousePressed(e -> {
+            b.setScaleX(0.97);
+            b.setScaleY(0.97);
+        });
+
+        b.setOnMouseReleased(e -> {
+            b.setScaleX(1.0);
+            b.setScaleY(1.0);
+        });
+    }
+
 }
