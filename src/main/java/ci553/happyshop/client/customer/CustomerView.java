@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import javafx.scene.control.Button;
+import javafx.scene.control.Button; //
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 
@@ -117,8 +117,8 @@ public class CustomerView  {
         Button btnAddToTrolley = new Button("Add to Trolley");
         btnAddToTrolley.setStyle(UIStyle.buttonStyle);
 
-        applyButtonEffects(btnAddToTrolley);
         btnAddToTrolley.setOnAction(this::buttonClicked);
+        applyButtonEffects(btnAddToTrolley); //
 
         HBox hbBtns = new HBox(10, laPlaceHolder,btnSearch, btnAddToTrolley);
 
@@ -232,6 +232,7 @@ public class CustomerView  {
         int lastIndex = hbRoot.getChildren().size() - 1;
         if (lastIndex >= 0) {
             hbRoot.getChildren().set(lastIndex, pageToShow);
+            fadeIn(pageToShow);
         }
     }
 
@@ -241,6 +242,7 @@ public class CustomerView  {
     }
 
     private void applyButtonEffects(Button b) {
+
         DropShadow shadow = new DropShadow();
         shadow.setRadius(10);
         shadow.setOffsetY(2);
@@ -248,11 +250,14 @@ public class CustomerView  {
 
         b.setOnMouseEntered(e -> {
             b.setEffect(shadow);
-            b.setStyle(b.getStyle() + "; -fx-cursor: hand;");
+            b.setCursor(javafx.scene.Cursor.HAND); //
+
         });
 
         b.setOnMouseExited(e -> {
             b.setEffect(null);
+            b.setCursor(javafx.scene.Cursor.DEFAULT); //
+
         });
 
         b.setOnMousePressed(e -> {
@@ -264,6 +269,15 @@ public class CustomerView  {
             b.setScaleX(1.0);
             b.setScaleY(1.0);
         });
+    }
+
+    private void fadeIn(Node node) {
+        javafx.animation.FadeTransition ft =
+                new javafx.animation.FadeTransition(
+                        javafx.util.Duration.millis(180), node);
+        ft.setFromValue(0.0);
+        ft.setToValue(1.0);
+        ft.play();
     }
 
 }
