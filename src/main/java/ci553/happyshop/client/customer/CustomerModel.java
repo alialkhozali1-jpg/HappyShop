@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Comparator;
+
 
 /**
  * TODO
@@ -70,7 +72,31 @@ public class CustomerModel {
             //TODO
             // 1. Merges items with the same product ID (combining their quantities).
             // 2. Sorts the products in the trolley by product ID.
-            trolley.add(theProduct);
+            boolean found = false;
+
+            for (Product p : trolley) {
+                if (p.getProductId().equals(theProduct.getProductId())) {
+                    p.setOrderedQuantity(p.getOrderedQuantity() + 1);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                Product copy = new Product(
+                        theProduct.getProductId(),
+                        theProduct.getProductDescription(),
+                        theProduct.getProductImageName(),
+                        theProduct.getUnitPrice(),
+                        theProduct.getStockQuantity()
+                );
+                copy.setOrderedQuantity(1);
+                trolley.add(copy);
+            }
+
+            trolley.sort(Comparator.comparing(Product::getProductId));
+
+
             displayTaTrolley = ProductListFormatter.buildString(trolley); //build a String for trolley so that we can show it
         }
         else{
