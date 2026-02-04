@@ -21,6 +21,9 @@ import java.util.TreeMap;
  */
 
 public class OrderTracker {
+
+    private static Stage viewWindow;
+
     private final int WIDTH = UIStyle.trackerWinWidth;
     private final int HEIGHT = UIStyle.trackerWinHeight;
 
@@ -41,6 +44,12 @@ public class OrderTracker {
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setStyle(UIStyle. rootStyleGray);
 
+        if (viewWindow != null && viewWindow.isShowing()) {
+            viewWindow.toFront();
+            viewWindow.requestFocus();
+            return;
+        }
+
         Scene scene = new Scene(vbox, WIDTH, HEIGHT);
         Stage window = new Stage();
         window.setScene(scene);
@@ -49,6 +58,10 @@ public class OrderTracker {
         // Registers the window's position with WinPosManager.
         WinPosManager.registerWindow(window,WIDTH,HEIGHT); //calculate position x and y for this window
         window.show();
+
+        viewWindow = window;
+
+        window.setOnHidden(e -> viewWindow = null);
     }
 
     /**
