@@ -426,8 +426,8 @@ public class WarehouseView  {
         ivProNewPro = new ImageView("WarehouseImageHolder.jpg");
         ivProNewPro.setFitWidth(100);
         ivProNewPro.setFitHeight(70);
-        ivProEdit.setPreserveRatio(true); //Image keeps its original shape and fits inside 100×70
-        ivProEdit.setSmooth(true);//make it smooth and nice-looking
+        ivProNewPro.setPreserveRatio(true); //Image keeps its original shape and fits inside 100×70
+        ivProNewPro.setSmooth(true);//make it smooth and nice-looking
 
         // Image Click Event (Open File Chooser)
         ivProNewPro.setOnMouseClicked(this::imageChooser);
